@@ -18,4 +18,18 @@ public class BetterArray {
         return lst != null && index < lst.size() && index >= 0 ? lst.get(index) : null;
     }
 
+    public static Boolean isEmpty(Object collection) {
+        Boolean results = collection == null;
+        if(!results) {
+            try {
+                String serialized = JSON.serialize(collection);
+                List<Object> deserialized = (List<Object>) JSON.deserializeUntyped(serialized);
+                results = deserialized == null || deserialized.isEmpty();
+            } catch(System.TypeException e) {
+                results = true;
+            }
+        }
+        return results;
+    }
+
 }

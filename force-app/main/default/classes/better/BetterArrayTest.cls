@@ -64,4 +64,15 @@ public class BetterArrayTest {
         System.assertEquals('a', BetterArray.at(foo, 0));
         System.assertEquals(2, BetterArray.at(foo, 1));
     }
+
+    @IsTest
+    public static void detectsWhenCollectionIsEmpty() {
+
+        System.assertEquals(false, BetterArray.isEmpty(new List<Object>{1, 'Foo'}));
+        System.assertEquals(false, BetterArray.isEmpty(new List<String>{'Foo'}));
+        System.assertEquals(true, BetterArray.isEmpty(new List<String>{}));
+        System.assertEquals(true, BetterArray.isEmpty(new List<Integer>()));
+        System.assertEquals(true, BetterArray.isEmpty(null));
+        System.assertEquals(true, BetterArray.isEmpty(1));
+    }
 }

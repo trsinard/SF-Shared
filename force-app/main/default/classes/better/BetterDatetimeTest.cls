@@ -23,24 +23,9 @@ public class BetterDatetimeTest {
     }
 
     @IsTest
-    public static void givenAmbiguousDateConvertsToTypedDate() {
-        Date expected = Date.newInstance(2021, 12, 30);
-        System.assertEquals(expected, BetterDatetime.toDate('2021-12-30'), 'Failed to convert from String');
-        System.assertEquals(expected, BetterDatetime.toDate(Datetime.newInstance(2021, 12, 30, 01, 30, 00)), 'Failed to convert from Datetime');
-        System.assertEquals(expected, BetterDatetime.toDate('12/30/2021'), 'Failed to convert from Localized String');
-        Object untypedDate = Date.newInstance(2021, 12, 30);
-        System.assertEquals(expected, BetterDatetime.toDate(untypedDate), 'Failed to convert from untyped date');
-    }
-
-    @IsTest
-    public static void givenInvalidDateThenToDateReturnsNull() {
-        System.assertEquals(null, BetterDatetime.toDate('invalid'));
-    }
-
-    @IsTest
     public static void givenTwoDatesThenReturnsMax() {
-        Date d1 = Date.newInstance(2021, 09, 12);
-        Date d2 = Date.newInstance(2020, 10, 30);
+        Datetime d1 = Datetime.newInstance(2020, 10, 30, 11,0,0);
+        Datetime d2 = Datetime.newInstance(2020, 10, 30, 3, 0, 0);
         System.assertEquals(d1, BetterDatetime.max(d1, d2));
         System.assertEquals(d1, BetterDatetime.max(d2, d1));
         System.assertEquals(d1, BetterDatetime.max(null, d1));
@@ -50,8 +35,8 @@ public class BetterDatetimeTest {
 
     @IsTest
     public static void givenTwoDatesThenReturnsMin() {
-        Date d1 = Date.newInstance(2021, 09, 12);
-        Date d2 = Date.newInstance(2020, 10, 30);
+        Datetime d1 = Datetime.newInstance(2020, 10, 30, 11,0,0);
+        Datetime d2 = Datetime.newInstance(2020, 10, 30, 3, 0, 0);
         System.assertEquals(d2, BetterDatetime.min(d1, d2));
         System.assertEquals(d2, BetterDatetime.min(d2, d1));
         System.assertEquals(d1, BetterDatetime.min(null, d1));
