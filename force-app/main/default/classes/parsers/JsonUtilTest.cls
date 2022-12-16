@@ -94,4 +94,22 @@ public class JsonUtilTest {
         System.assertEquals(null, results);
     }
 
+    @IsTest
+    public static void extractsValueGivenSearchedProperty() {
+
+        String payload = '[{"key": 1,"value" : "test1"},{"key": 2,"value" : "test2"},{"key": 3,"value" : "test3"},{"key": 4,"value" : "test4"},{"key": 5,"value" : "test5"},{"key": 6,"value" : "test6"}]';
+        Object results = JsonUtil.fromPathMatchingAttribute(payload, 'value', 'key', 3);
+        System.assertEquals('test3',results);
+        Object resultsNoMatch = JsonUtil.fromPathMatchingAttribute(payload, 'value', 'key', 30);
+        System.assertEquals(null,resultsNoMatch);
+    }
+
+    @IsTest
+    public static void extractsValueGivenSearchedPropertyInNestedStructure() {
+
+        String payload = '{"nested": {"arbitrary": 0,"the_list": [{"key": 1,"value": "test1"},{"key": 2,"value": "test2"},{"key": 3,"value": "test3"},{"key": 4,"value": "test4"},{"key": 5,"value": "test5"},{"key": 6,"value": "test6"}]}}';
+        Object results = JsonUtil.fromPathMatchingAttribute(payload, 'nested.the_list.value', 'key', 3);
+        System.assertEquals('test3',results);
+    }
+
 }

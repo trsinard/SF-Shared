@@ -38,6 +38,25 @@ public class JsonUtil {
         return BetterInteger.valueOf(valueFromPath(payload, path));
     }
 
+
+    public static Object fromPathMatchingAttribute(String payload, String path, String key, Object value) {
+
+        String parentPropertyPath = path.substringBeforeLast('.');
+        String currentProperty = path.substringAfterLast('.');
+        currentProperty = String.isEmpty(currentProperty) ? parentPropertyPath : currentProperty;
+        Object parentCollection = valueFromPath(payload, parentPropertyPath);
+        if(parentCollection instanceof List<Object>) {
+            List<Object> collection = (List<Object>) parentCollection;
+            for(Object entry : collection) {
+                Map<String, Object> entryMap = (Map<String, Object>) entry;
+                if(entryMap.get(key) == value) {
+                    return entryMap.get(currentProperty);
+                }
+            }
+        }
+        return null;
+    }
+
     public static Object deserialize(String payload) {
         Object deserialized;
         if (payload != null) {
