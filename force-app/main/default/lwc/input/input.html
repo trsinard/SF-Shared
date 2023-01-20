@@ -1,0 +1,30 @@
+<template>
+    <div class="input-container">
+        <div class="input-label-container">
+            <div if:true={required} class="slds-required">
+                *
+            </div>
+            <div class="slds-form-element__label">
+                {label}
+            </div>
+            <div if:true={helpText} class="input-help-container">
+                <lightning-helptext content={helpText}>
+                </lightning-helptext>
+            </div>
+        </div>
+        <lightning-input
+                type={type}
+                value={value}
+                max-length={maxLength}
+                min-length={minLength}
+                required={required}
+                formatter={formatter}
+                onblur={handleBlur}
+                onfocus={handleFocus}
+                min={min}
+                max={max}
+                variant="label-hidden"
+                onchange={handleChange}>
+        </lightning-input>
+    </div>
+</template>

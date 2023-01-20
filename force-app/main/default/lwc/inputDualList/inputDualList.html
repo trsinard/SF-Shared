@@ -1,0 +1,27 @@
+<template>
+    <div class="input-container">
+        <div class="input-label-container">
+            <div if:true={required} class="slds-required">
+                *
+            </div>
+            <div class="slds-form-element__label">
+                {label}
+            </div>
+            <div if:true={helpText} class="input-help-container">
+                <lightning-helptext content={helpText}>
+                </lightning-helptext>
+            </div>
+        </div>
+        <lightning-dual-listbox
+                source-label="Available"
+                selected-label="Selected"
+                options={options}
+                value={value}
+                required={required}
+                min={minSelection}
+                max={maxSelection}
+                variant="label-hidden"
+                onchange={handleChange}>
+        </lightning-dual-listbox>
+    </div>
+</template>

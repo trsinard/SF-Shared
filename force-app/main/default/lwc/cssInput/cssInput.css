@@ -1,0 +1,17 @@
+
+
+.input-container {
+    min-height: 75px;
+}
+.input-label-container {
+    width: 100%;
+}
+
+.input-label-container .slds-required {
+    max-width: 10px;
+    float:left;
+}
+.input-label-container .input-help-container {
+    float:right;
+    max-width:25px;
+}

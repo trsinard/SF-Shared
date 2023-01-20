@@ -1,0 +1,23 @@
+<template>
+    <div class="input-container">
+        <div class="input-label-container">
+            <div if:true={required} class="slds-required">
+                *
+            </div>
+            <div class="slds-form-element__label">
+                {label}
+            </div>
+            <div if:true={helpText} class="input-help-container">
+                <lightning-helptext content={helpText}>
+                </lightning-helptext>
+            </div>
+        </div>
+        <lightning-combobox
+                variant="label-hidden"
+                value={value}
+                options={options}
+                required={required}
+                onchange={handleChange}>
+        </lightning-combobox>
+    </div>
+</template>
