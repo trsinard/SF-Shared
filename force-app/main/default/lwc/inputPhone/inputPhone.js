@@ -1,12 +1,18 @@
 import {api, LightningElement} from 'lwc';
-import {isEmpty} from "c/parsingUtil";
+import {clone, isEmpty} from "c/parsingUtil";
 
 export default class InputPhone extends LightningElement {
 
     @api label;
     @api required;
     @api enforceFormat;
-    @api value;
+    @api set value(val) {
+        this._value = this.formatPhone(clone(val));
+    }
+    get value() {
+        return this._value
+    }
+    _value;
     validationMessage;
 
     connectedCallback() {
@@ -16,7 +22,6 @@ export default class InputPhone extends LightningElement {
 
     formatPhone(inputPhone) {
         inputPhone = inputPhone == null ? "" : inputPhone.replace(/\D/g, '');
-
         let formattedPhone = inputPhone.match(/(\d{0,3})(\d{0,3})(\d{0,4})(x?\d*)/);
         if(this.enforceFormat) {
             inputPhone = !formattedPhone[2] ? formattedPhone[1] : '(' + formattedPhone[1] + ') ' + formattedPhone[2] + (formattedPhone[3] ? '-' + formattedPhone[3] : '');
