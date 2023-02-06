@@ -1,6 +1,3 @@
-const empty = (val) => {
-    return val === null || typeof val === 'undefined' || (Array.isArray(val) && val.length === 0 || String(val) === "");
-}
 
 const formatPhone = (phone) => {
     if (phone) {
@@ -12,4 +9,4 @@ const formatPhone = (phone) => {
     return phone;
 }
 
-export {empty, formatPhone}
+export {formatPhone}

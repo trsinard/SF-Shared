@@ -1,5 +1,5 @@
 import {api, LightningElement} from 'lwc';
-import {empty} from "c/commonUtils";
+import {isEmpty} from "c/parsingUtil";
 
 export default class InputPhone extends LightningElement {
 
@@ -44,7 +44,7 @@ export default class InputPhone extends LightningElement {
 
     @api reportValidity() {
         this.validationMessage = '';
-        if(!((this.required && !empty(this.value)) || !this.required)) {
+        if(!((this.required && !isEmpty(this.value)) || !this.required)) {
             this.validationMessage = "Complete this field."
         } else if(this.value) {
             let lengthValidWithFormat = this.enforceFormat && ((this.value.length === 14 || this.value.length === 0) || (this.value.length > 16 && this.value.length <= 22));
@@ -59,6 +59,6 @@ export default class InputPhone extends LightningElement {
     }
 
     @api checkValidity() {
-        return empty(this.validationMessage);
+        return isEmpty(this.validationMessage);
     }
 }
