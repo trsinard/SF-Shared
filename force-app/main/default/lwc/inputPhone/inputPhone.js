@@ -1,12 +1,18 @@
 import {api, LightningElement} from 'lwc';
-import {empty} from "c/commonUtils";
+import {clone, isEmpty} from "c/parsingUtil";
 
 export default class InputPhone extends LightningElement {
 
     @api label;
     @api required;
     @api enforceFormat;
-    @api value;
+    @api set value(val) {
+        this._value = this.formatPhone(clone(val));
+    }
+    get value() {
+        return this._value
+    }
+    _value;
     validationMessage;
 
     connectedCallback() {
@@ -16,7 +22,6 @@ export default class InputPhone extends LightningElement {
 
     formatPhone(inputPhone) {
         inputPhone = inputPhone == null ? "" : inputPhone.replace(/\D/g, '');
-
         let formattedPhone = inputPhone.match(/(\d{0,3})(\d{0,3})(\d{0,4})(x?\d*)/);
         if(this.enforceFormat) {
             inputPhone = !formattedPhone[2] ? formattedPhone[1] : '(' + formattedPhone[1] + ') ' + formattedPhone[2] + (formattedPhone[3] ? '-' + formattedPhone[3] : '');
@@ -44,7 +49,7 @@ export default class InputPhone extends LightningElement {
 
     @api reportValidity() {
         this.validationMessage = '';
-        if(!((this.required && !empty(this.value)) || !this.required)) {
+        if(!((this.required && !isEmpty(this.value)) || !this.required)) {
             this.validationMessage = "Complete this field."
         } else if(this.value) {
             let lengthValidWithFormat = this.enforceFormat && ((this.value.length === 14 || this.value.length === 0) || (this.value.length > 16 && this.value.length <= 22));
@@ -59,6 +64,6 @@ export default class InputPhone extends LightningElement {
     }
 
     @api checkValidity() {
-        return empty(this.validationMessage);
+        return isEmpty(this.validationMessage);
     }
 }
