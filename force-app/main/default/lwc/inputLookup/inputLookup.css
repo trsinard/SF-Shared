@@ -1,0 +1,25 @@
+.input-lookup-pill, .input-lookup-pill-container {
+    width: 100%;
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+
+}
+
+.input-lookup-dropdown-entry-unselectable {
+    padding: 10px;
+    font-style: italic;
+    color: gray;
+}
+.input-lookup-dropdown-container {
+    max-width: 700px;
+    position: absolute;
+    border: 1px solid gainsboro;
+    border-bottom: 5px solid gainsboro;
+    border-top: 0;
+    border-radius: 0 0 5px 5px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-width: 350px;
+    background-color: white;
+    z-index: 1;
+}

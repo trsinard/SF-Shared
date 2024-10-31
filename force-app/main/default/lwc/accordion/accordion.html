@@ -1,0 +1,34 @@
+<template>
+    <div class="accordion_main-container">
+        <div class="accordion_header-container">
+            <table>
+                <tbody>
+                <tr onclick={toggleAccordion}>
+                    <td>
+                        <lightning-icon icon-name={icon} size={iconSize}></lightning-icon>
+                    </td>
+                    <td class="accordion_header">
+                        {label}
+                    </td>
+                    <td>
+                        <div if:true={icon}>
+                            <lightning-icon if:true={expanded}
+                                            class="accordion_icon-clickable"
+                                            icon-name="utility:chevronup"
+                                            size="x-small">
+
+                            </lightning-icon>
+                            <lightning-icon if:false={expanded} class="accordion_icon-clickable"
+                                            icon-name="utility:chevrondown"
+                                            size="x-small"></lightning-icon>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="accordion_option-container accordion_option-container-close" data-id="option-container">
+            <slot></slot>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <description>Input Lookup</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Input Lookup</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="label" label="Label" type="String" role="inputOnly"/>
+            <property name="objectApi" label="Object Api" type="String" required="true" role="inputOnly"/>
+            <property name="labelApi" label="Label Api" type="String" required="true" default="Name" role="inputOnly"/>
+            <property name="valueApi" label="Value Api" type="String" required="true" default="Id" role="inputOnly"/>
+            <property name="orderByApi" label="Order By Api" type="String"  role="inputOnly"/>
+            <property name="icon" label="Icon" type="String" role="inputOnly"/>
+            <property name="required" label="Required" type="Boolean" role="inputOnly"/>
+            <property name="filter" label="Default Filter" type="String" role="inputOnly"/>
+            <property name="placeholder" label="Placeholder" type="String" role="inputOnly"/>
+            <property name="value" label="Value" type="String" role="outputOnly"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

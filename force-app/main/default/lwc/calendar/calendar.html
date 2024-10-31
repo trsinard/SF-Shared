@@ -1,0 +1,94 @@
+<template>
+
+    <div class={hostClass}>
+        <div if:true={isLoading} class="loading_container">
+            <lightning-spinner></lightning-spinner>
+        </div>
+        <div if:false={isLoading}>
+            <div class="calender_container">
+                <table if:true={calendarMonth}>
+                    <thead>
+                    <tr>
+                        <th colspan="7">
+                            <div class="calendar_header">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th class="calendar_header-action" onclick={prevMonth}>
+                                            <div if:true={disablePrevMonth} class="calendar_header-action-disabled">
+                                                <lightning-icon icon-name="utility:left" size="x-small"></lightning-icon>
+                                            </div>
+                                            <div if:false={disablePrevMonth}>
+                                                <lightning-icon icon-name="utility:left" size="x-small"></lightning-icon>
+                                            </div>
+
+                                        </th>
+                                        <th class="calendar_header-text calendar_header-month">
+                                            {calendarMonth.month.label}
+                                        </th>
+                                        <th class="calendar_header-action" onclick={nextMonth}>
+                                            <div if:true={disableNextMonth} class="calendar_header-action-disabled">
+                                                <lightning-icon icon-name="utility:right" size="x-small"></lightning-icon>
+                                            </div>
+                                            <div if:false={disableNextMonth}>
+                                                <lightning-icon icon-name="utility:right" size="x-small"></lightning-icon>
+                                            </div>
+                                        </th>
+                                        <th class="calendar_header-action calendar_header-input">
+                                            <lightning-combobox
+                                                    label=""
+                                                    disabled={readOnly}
+                                                    read-only={readOnly}
+                                                    variant="label-hidden"
+                                                    options={yearOptions}
+                                                    onchange={handleYearComboSelection}
+                                                    value={selectedYearComboValue}>
+                                            </lightning-combobox>
+                                        </th>
+
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr class="calendar_header-day">
+                        <th class="calendar_header-day">Sun</th>
+                        <th class="calendar_header-day">Mon</th>
+                        <th class="calendar_header-day">Tue</th>
+                        <th class="calendar_header-day">Wed</th>
+                        <th class="calendar_header-day">Thu</th>
+                        <th class="calendar_header-day">Fri</th>
+                        <th class="calendar_header-day">Sat</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <template for:each={calendarMonth.weeks} for:item="week" for:index="week_index">
+                        <tr key={week.key}>
+                            <template for:each={week.days} for:item="day" for:index="day_index">
+                                <td key={day.key}>
+                                    <div class={day.styleClass}
+                                         onclick={handleDaySelection}
+                                         data-date={day.date}
+                                         data-active={day.isActive}>
+                                        <div class="calendar_body-day-text-container">
+                                            <div class="calendar_body-day-text">{day.day}</div>
+                                        </div>
+
+                                    </div>
+                                </td>
+                            </template>
+                        </tr>
+                    </template>
+                    </tbody>
+                </table>
+            </div>
+            <div class="calendar_footer">
+                <div if:false={readOnly} class="calendar_footer-action" onclick={handleTodaySelection}>
+                    Today
+                </div>
+            </div>
+        </div>
+    </div>
+
+</template>

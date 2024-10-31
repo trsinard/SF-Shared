@@ -1,25 +1,6 @@
-/**
- * @author Timothy Sinard
- *
- */
 @IsTest
-public class BetterDateTest {
+public with sharing class BetterDateTest {
 
-
-    @IsTest
-    public static void givenAmbiguousDateConvertsToTypedDate() {
-        Date expected = Date.newInstance(2021, 12, 30);
-        System.assertEquals(expected, BetterDate.toDate('2021-12-30'), 'Failed to convert from String');
-        System.assertEquals(expected, BetterDate.toDate(Datetime.newInstance(2021, 12, 30, 01, 30, 00)), 'Failed to convert from Datetime');
-        System.assertEquals(expected, BetterDate.toDate('12/30/2021'), 'Failed to convert from Localized String');
-        Object untypedDate = Date.newInstance(2021, 12, 30);
-        System.assertEquals(expected, BetterDate.toDate(untypedDate), 'Failed to convert from untyped date');
-    }
-
-    @IsTest
-    public static void givenInvalidDateThenToDateReturnsNull() {
-        System.assertEquals(null, BetterDate.toDate('invalid'));
-    }
 
     @IsTest
     public static void givenTwoDatesThenReturnsMax() {
@@ -44,8 +25,26 @@ public class BetterDateTest {
     }
 
     @IsTest
-    public static void getsExpectedDayOfWeek() {
-
-        System.assertEquals(4, BetterDate.dayOfWeek(Date.newInstance(1991, 09,12)));
+    public static void getsDateOfWeekNameGivenDate() {
+        System.assertEquals('Monday', BetterDate.dayOfWeekName(Date.newInstance(2022, 09, 12)));
+        System.assertEquals('Thursday', BetterDate.dayOfWeekName(Date.newInstance(1991, 09, 12)));
     }
+
+    @IsTest
+    public static void getStartOfWeekGivenDate() {
+
+        Date expected = Date.newInstance(2022, 09, 12);
+        System.assertEquals(expected, BetterDate.getStartOfWeek(Date.newInstance(2022, 09, 15)));
+    }
+
+    @IsTest
+    public static void parsesDateFromObject() {
+        System.assertEquals(Date.newInstance(2021, 04, 26), BetterDate.valueOf('2021-04-26'));
+        System.assertEquals(Date.newInstance(2021, 04, 26), BetterDate.valueOf('2021-04-26T01:30:00'));
+        System.assertEquals(Date.newInstance(2021, 04, 26), BetterDate.valueOf('04/26/2021'));
+        System.assertEquals(null, BetterDate.valueOf(null));
+        System.assertEquals(null, BetterDate.valueOf(''));
+        System.assertEquals(null, BetterDate.valueOf('invalid'));
+    }
+
 }

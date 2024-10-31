@@ -1,0 +1,12 @@
+:host {
+    --calendar_offset: 0px;
+}
+
+.input_container {
+    position: relative;
+}
+
+.calendar_container {
+    top: var(--calendar_offset);
+    position: relative;
+}

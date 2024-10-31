@@ -5,12 +5,50 @@
 public virtual class RestfulConnection {
 
     protected String namedCredential;
+    private Boolean trackHistory = true;
+    private List<CallHistory> history = new List<CallHistory>();
 
-    private static Map<String, RestfulConnection> cachedConnections = new Map<String, RestfulConnection>();
+    public class CallHistory {
+        private final Datetime dt;
+        private final HttpRequest request;
+        private final HttpResponse response;
+        private CallHistory() {
+        }
+        public CallHistory(Datetime dt, HttpRequest request, HttpResponse response) {
+            this();
+            this.dt = dt;
+            this.request = request;
+            this.response = response;
+        }
+        public HttpRequest getRequest() {
+            return this.request;
+        }
+        public HttpResponse getResponse() {
+            return this.response;
+        }
+        public Datetime getDatetime() {
+            return this.dt;
+        }
+    }
+
+    private static final Map<String, RestfulConnection> cachedConnections = new Map<String, RestfulConnection>();
 
     public RestfulConnection(String namedCredential) {
+        this.enableHistoryTracking();
         this.namedCredential = namedCredential;
         RestfulConnection.cachedConnections.put(namedCredential, this);
+    }
+
+    public void disableHistoryTracking() {
+        this.trackHistory = false;
+    }
+
+    public void enableHistoryTracking() {
+        this.trackHistory = true;
+    }
+
+    public List<CallHistory> getHistory() {
+        return this.history;
     }
 
     public static RestfulConnection getConnection(String namedCredential) {
@@ -27,9 +65,15 @@ public virtual class RestfulConnection {
         return executeGet(path, null, null);
     }
 
+
     @TestVisible
     protected virtual String executeGet(String path, Map<String, String> headers, Map<String, Object> parameters) {
         return executeCallout(path, 'GET', headers, parameters, null).getBody();
+    }
+
+    @TestVisible
+    protected virtual String executePost(String path, Map<String, String> headers, Map<String, Object> body) {
+        return executePost(path, headers, JSON.serialize(body));
     }
 
     @TestVisible
@@ -47,7 +91,7 @@ public virtual class RestfulConnection {
     }
 
     public HttpResponse executeCallout(String path, String httpMethod, Map<String, Object> headers, Map<String, Object> parameters, String body) {
-        path += convertMapToUrlParameters(parameters);
+        path += this.convertMapToUrlParameters(parameters);
         headers = headers == null ? new Map<String, String>() : headers;
         return executeCallout(path, httpMethod, headers, body);
 
@@ -66,9 +110,23 @@ public virtual class RestfulConnection {
             }
         }
         Http http = new Http();
+        System.debug(LoggingLevel.FINE, 'Executing callout ');
+        System.debug(LoggingLevel.FINE, 'REQUEST: ' + JSON.serialize(new Map<String, Object>{
+            'METHOD' => req.getMethod(),
+            'ENDPOINT' => req.getEndpoint(),
+            'HEADERS' => headers,
+            'BODY' => body
+        }));
         HttpResponse response = http.send(req);
+        if (this.trackHistory) {
+            this.history.add(new CallHistory(TestableDatetime.now(), req, response));
+        }
+        System.debug(LoggingLevel.FINE, 'RESPONSE: ' + JSON.serialize(new Map<String, Object>{
+            'STATUS' => response.getStatus(),
+            'BODY' => response.getBody()
+        }));
         if (response.getStatusCode() == 403) {
-            throw new AuthorizationException();
+            throw new AuthorizationException(response.getBody());
         }
         return response;
     }

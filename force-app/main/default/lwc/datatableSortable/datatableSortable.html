@@ -1,0 +1,16 @@
+<template>
+    <div class={containerClass}>
+        <lightning-datatable
+                columns={columns}
+                data={entries}
+                key-field={keyField}
+                max-row-selection={maxSelection}
+                selected-rows={selectedRows}
+                onrowselection={handleRowSelection}
+                onsort={handleSortEvent}
+                onresize={handleResize}
+                sorted-by={sortedBy}
+                sorted-direction={sortedDirection}>
+        </lightning-datatable>
+    </div>
+</template>

@@ -1,0 +1,25 @@
+<template>
+    <div class="record-pill-container">
+        <table>
+            <tbody>
+            <tr>
+                <td class="record-pill-icon">
+                <lightning-icon
+                        if:true={icon}
+                        icon-name={icon} size="x-small">
+                </lightning-icon>
+                </td>
+                <td class="record-pill-label">
+                    <a title={label} onclick={handleClick}>
+                        <span class="slds-pill__label">{label}</span>
+                    </a>
+                </td>
+                <td class="record-pill-close" onclick={handleRemove}>
+                    <lightning-icon icon-name="utility:close" size="x-small">
+                    </lightning-icon>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</template>

@@ -1,0 +1,20 @@
+:host {
+    --et_font_size: 12px;
+    --et_threshold_color: white;
+    --et_threshold_background_color: #bb0b1d;
+}
+
+.et_container {
+    display: flex;
+    flex-flow: nowrap;
+    justify-content: flex-start;
+    font-size: var(--et_font_size);
+    gap: 5px;
+}
+
+
+
+.et_item {
+    flex: 0 1 auto;
+    text-align: center;
+}

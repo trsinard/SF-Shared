@@ -1,0 +1,11 @@
+<template>
+    <div class="et_container" data-exceeds={dataExceedsTag}>
+        <div class="et_item" if:true={showYears}>{tracker.years} Yrs</div>
+        <div class="et_item" if:true={showMonths}>{tracker.months} Mos</div>
+        <div class="et_item" if:true={showDays}>{tracker.days} Days</div>
+        <div class="et_item" if:true={showHours}>{tracker.hours} Hrs</div>
+        <div class="et_item" if:true={showMinutes}>{tracker.minutes} Mins</div>
+        <div class="et_item" if:true={showSeconds}>{tracker.seconds} Secs</div>
+    </div>
+
+</template>

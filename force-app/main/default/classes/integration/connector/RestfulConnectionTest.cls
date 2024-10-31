@@ -9,7 +9,7 @@ public class RestfulConnectionTest {
     public static void executesExpectedGetRequest() {
 
         String expectedResponse = '{"response":"success"}';
-        HttpMock mock = new HttpMock(expectedResponse, 200);
+        HttpMock mock = new HttpMock(200, 'Success', expectedResponse);
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
         RestfulConnection connection = new RestfulConnection('NAMED_CREDENTIAL');
@@ -29,16 +29,71 @@ public class RestfulConnectionTest {
     }
 
     @IsTest
+    public static void tracksHistoryForCalls() {
+
+        TestableDatetime.setNow(Datetime.newInstance(2024, 09, 06, 03, 23, 20));
+        String expectedResponse = '{"response":"success"}';
+        HttpMock mock = new HttpMock(200, 'Success', expectedResponse);
+        Test.setMock(HttpCalloutMock.class, mock);
+        Test.startTest();
+        RestfulConnection connection = new RestfulConnection('NAMED_CREDENTIAL');
+        connection.executeGet('/relative', new Map<String, String>{
+            'TEST' => 'value'
+        }, new Map<String, String>{
+            'param1' => 'foobar'
+        });
+
+        Test.stopTest();
+
+        List<RestfulConnection.CallHistory> result = connection.getHistory();
+        System.assertEquals(1, result.size());
+        HttpRequest theRequest = result.get(0).getRequest();
+        HttpResponse theResponse = result.get(0).getResponse();
+        System.assertEquals(Datetime.newInstance(2024, 09, 06, 03, 23, 20), result.get(0).getDatetime());
+        System.assertEquals('', theRequest.getBody());
+        System.assertEquals('GET', theRequest.getMethod());
+        System.assertEquals('callout:NAMED_CREDENTIAL/relative?param1=foobar', theRequest.getEndpoint());
+        System.assertEquals('Success', theResponse.getStatus());
+        System.assertEquals(200, theResponse.getStatusCode());
+        System.assertEquals(expectedResponse, theResponse.getBody());
+    }
+
+
+    @IsTest
+    public static void skipsHistoryTrackingForCallsWhenDisabled() {
+
+        TestableDatetime.setNow(Datetime.newInstance(2024, 09, 06, 03, 23, 20));
+        String expectedResponse = '{"response":"success"}';
+        HttpMock mock = new HttpMock(200, 'Success', expectedResponse);
+        Test.setMock(HttpCalloutMock.class, mock);
+        Test.startTest();
+        RestfulConnection connection = new RestfulConnection('NAMED_CREDENTIAL');
+        connection.disableHistoryTracking();
+        connection.executeGet('/relative', new Map<String, String>{
+            'TEST' => 'value'
+        }, new Map<String, String>{
+            'param1' => 'foobar'
+        });
+
+        Test.stopTest();
+
+        List<RestfulConnection.CallHistory> result = connection.getHistory();
+        System.assertEquals(0, result.size());
+    }
+
+    @IsTest
     public static void executesExpectedPostRequest() {
 
         String expectedResponse = '{"response":"success"}';
-        HttpMock mock = new HttpMock(expectedResponse, 200);
+        HttpMock mock = new HttpMock(200, 'Success', expectedResponse);
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
         RestfulConnection connection = new RestfulConnection('NAMED_CREDENTIAL');
         String actualResponse = connection.executePost('/relative', new Map<String, String>{
             'TEST' => 'value'
-        }, '{"body":"fubar"}');
+        }, new Map<String, Object>{
+            'body' => 'fubar'
+        });
 
         Test.stopTest();
 
@@ -53,7 +108,7 @@ public class RestfulConnectionTest {
     public static void throwsAuthorizationExceptionWith403() {
 
         String expectedResponse = 'Forbidden';
-        HttpMock mock = new HttpMock(expectedResponse, 403);
+        HttpMock mock = new HttpMock(403, 'Unauthorized', expectedResponse);
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
         RestfulConnection connection = new RestfulConnection('NAMED_CREDENTIAL');

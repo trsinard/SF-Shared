@@ -1,0 +1,14 @@
+<template>
+    <div class="slds-badge et_container et_container-badge" data-exceeds={dataExceedsTag}>
+        <div class="slds-icon_container slds-icon-utility-clock slds-current-color">
+            <lightning-icon icon-name="utility:clock" size="small" alternative-text="icon"></lightning-icon>
+        </div>
+        <div class="et_item" if:true={showYears}>{tracker.years} Yr<span if:true={tracker.years}>s</span></div>
+        <div class="et_item" if:true={showMonths}>{tracker.months} Mo<span if:true={tracker.months}>s</span></div>
+        <div class="et_item" if:true={showDays}>{tracker.days} Day<span if:true={tracker.days}>s</span></div>
+        <div class="et_item" if:true={showHours}>{tracker.hours} Hr<span if:true={tracker.hours}>s</span></div>
+        <div class="et_item" if:true={showMinutes}>{tracker.minutes} Min<span if:true={tracker.minutes}>s</span></div>
+        <div class="et_item" if:true={showSeconds}>{tracker.seconds} Sec<span if:true={tracker.seconds}>s</span></div>
+    </div>
+
+</template>

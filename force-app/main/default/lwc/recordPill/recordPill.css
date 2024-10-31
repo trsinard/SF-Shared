@@ -1,0 +1,17 @@
+.record-pill-container {
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+}
+
+.record-pill-container td {
+    padding: 5px;
+}
+
+.record-pill-container td:first-child, .record-pill-container td:last-child {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.record-pill-close {
+    cursor: pointer;
+}

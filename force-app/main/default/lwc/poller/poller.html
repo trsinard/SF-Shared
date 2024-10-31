@@ -1,0 +1,32 @@
+<!-- Poller -->
+<template>
+
+    <div if:true={debug}>
+        <div>
+            Config Interval Seconds : {intervalSeconds}
+        </div>
+        <div>
+            Config Timeout Seconds : {activityTimeoutSeconds}
+        </div>
+        <div>
+            Activity Timed-out : {activityTimedOut}
+        </div>
+        <div>
+            Last Execution :
+            <lightning-formatted-date-time
+                    value={lastExecution}
+                    year="numeric"
+                    month="numeric"
+                    day="numeric"
+                    hour="2-digit"
+                    minute="2-digit"
+                    second="2-digit"
+                    time-zone-name="short">
+            </lightning-formatted-date-time>
+        </div>
+        <div>
+            Seconds Since Execution :
+            <c-elapsed-timer root-date-time={lastExecution} variant="bare"></c-elapsed-timer>
+        </div>
+    </div>
+</template>

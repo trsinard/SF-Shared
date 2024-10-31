@@ -1,0 +1,23 @@
+@import "./elapsedTimerBase";
+:host {
+    --color-et-border: #1A4155;
+}
+.et_container {
+    justify-content: space-evenly;
+    padding: 5px;
+}
+.et_container-badge[data-exceeds="false"], .et_container-badge[data-exceeds="true"] {
+    border: 1px solid var(--color-et-border);
+    border-radius: 50px;
+    background-color: #fdfdfd;
+}
+
+.et_container-badge[data-exceeds="true"] {
+    background-color: var(--et_threshold_background_color);
+    color: var(--et_threshold_color);
+    border-color: var(--et_threshold_background_color);
+}
+
+.et_item {
+    flex: 1 1 auto;
+}

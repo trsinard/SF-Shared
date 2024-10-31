@@ -1,0 +1,55 @@
+<template>
+    <div aria-expanded="true" aria-haspopup="listbox" role="combobox" onmouseleave={handleMouseLeave}
+         onmouseenter={handleMouseEnter}>
+        <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
+             role="none">
+            <template if:true={selection}>
+                <div class="slds-form-element__label slds-no-flex">
+                    {label}
+                </div>
+                <div class="slds-pill-container input-lookup-pill-container">
+                    <c-record-pill
+                            label={selection.label}
+                            record-id={selection.Id}
+                            icon={icon}
+                            onremove={handleClearing}>
+                    </c-record-pill>
+                </div>
+            </template>
+            <template if:false={selection}>
+                <div class="slds-p-top_none">
+                    <lightning-input
+                            type="search"
+                            id="input"
+                            onblur={handleBlur}
+                            onfocus={handleFocus}
+                            onchange={handleSearchChange}
+                            autocomplete="false"
+                            label={label}
+                            required={required}
+                            placeholder={placeholder}>
+                    </lightning-input>
+                </div>
+            </template>
+        </div>
+        <div if:true={showOptions} class="input-lookup-dropdown-container" role="listbox">
+            <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                <div if:false={hasOptions} class="input-lookup-dropdown-entry-unselectable">
+                    No Results
+                </div>
+                <template if:true={hasOptions} for:each={records} for:item="record">
+                    <li key={record.Id} onclick={handleSelection} data-id={record.Id} role="presentation">
+                        <span class="slds-lookup__item-action slds-lookup__item-action_label" role="option">
+                            <lightning-icon
+                                    class="slds-icon slds-icon_x-small"
+                                    icon-name={icon}
+                                    size="x-small">
+                            </lightning-icon>
+                            <span class="slds-truncate">{record.label}</span>
+                        </span>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </div>
+</template>

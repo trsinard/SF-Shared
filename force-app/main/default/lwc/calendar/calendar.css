@@ -1,0 +1,219 @@
+:host {
+    --colorPrimary: #770298;
+    --colorPrimaryLight: #b558ce;
+    --colorSecondary: #ec10e8;
+    --colorSecondaryMedium: #fc99f9;
+    --colorSecondaryLight: #facff8;
+    --colorLight: #F5F5F5;
+}
+.loading_container {
+    position: relative;
+    border: 1px solid gainsboro;
+    height: 100px;
+    border-radius: 5px;
+    padding: 5px 15px;
+}
+.calendar_host, .calendar_host-readonly{
+    max-width: 800px;
+    min-width: 300px;
+    border: 5px solid var(--colorSecondary);
+    clip: auto;
+    border-radius: 10px;
+    resize: horizontal;
+    user-select: none;
+    background-color: white;
+}
+
+.calendar_header-text {
+
+}
+
+.calendar_host-readonly, .calendar_host-readonly .calendar_body-day-active  {
+    cursor: unset !important;
+    background-color: unset !important;
+    color: unset !important;
+    font-size: unset !important;
+
+}
+
+.calender_container {
+    padding: 10px;
+    clip: auto;
+}
+
+.calender_container, .calender_container table {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.calendar_header {
+
+}
+
+.calendar_header-action {
+    width: 0;
+    cursor: pointer;
+    --lwc-colorTextIconDefault: var(--colorPrimary);
+}
+
+.calendar_header-action-disabled {
+    cursor: unset;
+    --lwc-colorTextIconDefault: gainsboro;
+}
+
+.calendar_header-action:hover {
+    --lwc-colorTextIconDefault: var(--colorSecondary);
+}
+
+.calendar_header-input {
+    font-weight: unset;
+    max-width: 100px;
+    padding: 0 5px 5px 10px;
+}
+
+.calendar_header-month {
+    text-align: center;
+    font-size: 16px;
+}
+
+
+.calendar_header-day {
+    text-align: center;;
+    font-weight: unset;
+    border-bottom: 1px solid gainsboro;
+
+}
+
+
+/*Begin Body*/
+
+.calendar_body-day-text {
+    margin: auto;
+    height: min-content;
+}
+.calendar_body-day-text-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.calendar_body-day-active:hover {
+    background-color: var(--colorSecondaryLight);
+    color: var(--colorPrimary);
+    border-radius: 100% 100% 100% 100%;
+    font-size: 125%;
+}
+
+.calendar_body-day-active {
+    cursor: pointer;
+    transition: 0.5s ease-in-out background-color, 0.5s ease-in-out border-radius, 0.2s ease-in-out font-size;
+    text-align: center;
+}
+
+.calendar_body-day-inactive {
+    text-align: center;
+    background-color: var(--colorLight);
+    user-select: none;
+    color: gainsboro;
+}
+
+
+.calendar_body-day-filler {
+    background-color: #FDFDFD;
+    box-shadow: 0 0 0 150px  #FDFDFD;
+    color: var(--colorSecondaryMedium);
+}
+
+.calendar_body-day-today {
+    color: var(--colorSecondary);
+    font-weight: bold;
+}
+
+
+.calendar_body-day-selected, .calendar_body-day-selected:hover {
+    border: 2px solid var(--colorPrimary);
+    background-color: var(--colorPrimaryLight);
+    color: var(--colorPrimary);
+    border-radius: unset;
+}
+
+/*End Body*/
+
+
+/*Start Footer*/
+.calendar_footer {
+    padding: 5px 0 10px 0;
+    border-top: 1px solid var(--colorLight);
+}
+
+.calendar_footer-action:hover {
+    color: var(--colorSecondary);
+    text-decoration: underline;
+}
+
+.calendar_footer-action {
+    text-align: center;
+    margin: auto;
+    cursor: pointer;
+    color: var(--colorPrimary);
+}
+
+/*End Footer*/
+
+/*Maintain Square Aspect Ration*/
+.calendar_square {
+    box-sizing: border-box;
+    overflow: auto;
+    max-width: 100%;
+    height: calc(100vh - 16px);
+}
+thead > tr > th {
+    font-weight: unset;
+}
+tbody:nth-child(2) > tr > td {
+    width: 14.28%;
+    position: relative;
+    overflow: hidden;
+}
+
+tbody:nth-child(2) > tr > td:after {
+    content: '';
+    display: block;
+    margin-top: 100%;
+}
+
+tbody:nth-child(2) > tr > td .calendar_body-day {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    vertical-align: middle;
+}
+
+/*End Maintain Square Aspect Ratio*/
+
+/*Grid Styling - remove if not wanted*/
+
+tbody:nth-child(2) > tr > td {
+    border: 1px solid gainsboro;
+}
+
+tbody:nth-child(2) > tr:first-child > td {
+    border-top: 0 !important;;
+}
+
+tbody:nth-child(2) > tr > td:nth-child(1) {
+    border-left: 0 !important;;
+}
+
+tbody:nth-child(2) > tr:last-child > td {
+    border-bottom: 0 !important;;
+}
+
+tbody:nth-child(2) > tr > td:last-child {
+    border-right: 0 !important;;
+}
+
+/*End Grid Styling*/

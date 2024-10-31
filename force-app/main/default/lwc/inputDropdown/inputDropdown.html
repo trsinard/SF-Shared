@@ -1,0 +1,74 @@
+<template>
+    <!--This is to prevent the browser from auto-focusing the lookup field if it is the first input field rendered,
+    which causes the dropdown to display early.-->
+    <input type='text' style="display:none"/>
+    <div onmouseleave={onMouseExit} onmouseenter={onMouseEnter} data-id="searchRes"
+         class="id_main slds-form-element slds-lookup slds-is-close"
+         data-select="single">
+        <label if:true={label} class="slds-form-element__label lookupLabel">
+            <span class="slds-required" if:true={required}>*</span>{label}</label>
+        <div class="slds-form-element__control">
+            <div class="slds-input-has-icon slds-input-has-icon_right">
+                <div if:true={selectedRecord} class="slds-pill-container">
+                    <div class="id_pill-container" disabled={disabled}>
+                        <div class="id_pill-label">
+                            {selectedRecord.label}
+                        </div>
+                        <div if:false={disabled} class="id_pill-close" onclick={clear}>
+                            <lightning-icon icon-name="utility:close" size="xx-small"></lightning-icon>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div if:false={selectedRecord}>
+                    <lightning-input
+                            label=""
+                            disabled={disabled}
+                            data-id="searchinput"
+                            onchange={handleSearchChange}
+                            value={searchKeyWord}
+                            variant="label-hidden"
+                            required={required}
+                            onfocus={onFocus}
+                            onblur={onBlur}
+                            placeholder={placeholder}>
+                    </lightning-input>
+                    <lightning-icon
+                            class="id_input-icon"
+                            icon-name="utility:search"
+                            size="x-small">
+                    </lightning-icon>
+
+                </div>
+            </div>
+        </div>
+        <ul class="id_options-container slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid slds-lookup__menu slds"
+            role="listbox">
+            <div if:true={noResultsMessage} class="slds-text-align_center">{noResultsMessage}</div>
+            <div class="id_options-list">
+                <template for:each={filteredRecordList} for:item="rec">
+                    <li key={rec.index} role="presentation" class="slds-listbox__item" data-key={rec._key}
+                        onclick={selectRecord}>
+                        <span class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                              role="option">
+                            <span class="slds-media__body">
+                                <span class="slds-listbox__option-text_entity">{rec.label}</span>
+                                 <div if:true={rec.sublabel} class="id_pill-sublabel">
+                                    {rec.sublabel}
+                                 </div>
+                            </span>
+                        </span>
+                    </li>
+                </template>
+            </div>
+            <div data-id="scroll_anchor"></div>
+            <div class="id_options-action" if:true={hasMore} onclick={handleLoadMore}>
+                {loadMoreText}
+            </div>
+            <div class="id_options-message" if:true={hasMoreAtMax}>
+                Too many options... Provide a search term.
+            </div>
+        </ul>
+    </div>
+</template>

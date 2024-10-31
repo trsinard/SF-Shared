@@ -1,0 +1,13 @@
+.datatable-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+}
+
+/*
+    This is used to fix a rendering bug in the data-table for Firefox. The table expands well beyond the
+    parent container even with width 100% until the width is set to a specific value then cleared for re-render.
+ */
+.datatable-container-init {
+    width: 1200px !important;
+}
