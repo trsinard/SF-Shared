@@ -1,5 +1,4 @@
 import {api, LightningElement} from 'lwc';
-import {empty} from "c/commonUtils";
 
 export default class Input extends LightningElement {
 

@@ -1,7 +1,6 @@
+global with sharing class BetterBoolean {
 
-public with sharing class BetterBoolean {
-
-    public static Boolean valueOf(Object val) {
+    global static Boolean valueOf(Object val) {
         List<String> trueOptions = new List<String>{
             '1',
             't',
@@ -12,7 +11,7 @@ public with sharing class BetterBoolean {
         return Boolean.valueOf(asString) || trueOptions.contains(asString);
     }
 
-    public static Boolean coalesce(Boolean initial, Boolean fallback) {
+    global static Boolean coalesce(Boolean initial, Boolean fallback) {
         return initial == null ? fallback : initial;
     }
 }

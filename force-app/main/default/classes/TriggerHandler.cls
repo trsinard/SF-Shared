@@ -1,4 +1,4 @@
-public abstract class TriggerHandler {
+global abstract class TriggerHandler {
 
     private static final LoggingLevel LOGGING_LEVEL = LoggingLevel.FINE;
 
@@ -24,7 +24,7 @@ public abstract class TriggerHandler {
         entry.put(index, message);
         TriggerHandler.mockInsertRecordErrorByIndexByHandler.put(handler, entry);
     }
-    @SuppressWarnings('ApexUnusedDeclaration') public virtual void onBeforeInsert(List<SObject> newRecords) {
+    @SuppressWarnings('ApexUnusedDeclaration') global virtual void onBeforeInsert(List<SObject> newRecords) {
         Map<Integer, String> mockInsertRecordErrorByIndex = mockInsertRecordErrorByIndexByHandler.get(getHandlerName());
         if (mockInsertRecordErrorByIndex != null) {
             for (Integer i : mockInsertRecordErrorByIndex.keySet()) {
@@ -32,26 +32,26 @@ public abstract class TriggerHandler {
             }
         }
     }
-    @SuppressWarnings('ApexUnusedDeclaration') public virtual void onBeforeUpdate(List<SObject> oldRecords, List<SObject> newRecords, Map<Id, SObject> oldRecordMap, Map<Id, SObject> newRecordMap) {
+    @SuppressWarnings('ApexUnusedDeclaration') global virtual void onBeforeUpdate(List<SObject> oldRecords, List<SObject> newRecords, Map<Id, SObject> oldRecordMap, Map<Id, SObject> newRecordMap) {
     }
-    @SuppressWarnings('ApexUnusedDeclaration') public virtual void onBeforeDelete(List<SObject> oldRecords, Map<Id, SObject> oldRecordMap) {
+    @SuppressWarnings('ApexUnusedDeclaration') global virtual void onBeforeDelete(List<SObject> oldRecords, Map<Id, SObject> oldRecordMap) {
     }
-    @SuppressWarnings('ApexUnusedDeclaration') public virtual void onAfterInsert(List<SObject> newRecords, Map<Id, SObject> newRecordMap) {
+    @SuppressWarnings('ApexUnusedDeclaration') global virtual void onAfterInsert(List<SObject> newRecords, Map<Id, SObject> newRecordMap) {
     }
-    @SuppressWarnings('ApexUnusedDeclaration') public virtual void onAfterUpdate(List<SObject> oldRecords, List<SObject> newRecords, Map<Id, SObject> oldRecordMap, Map<Id, SObject> newRecordMap) {
+    @SuppressWarnings('ApexUnusedDeclaration') global virtual void onAfterUpdate(List<SObject> oldRecords, List<SObject> newRecords, Map<Id, SObject> oldRecordMap, Map<Id, SObject> newRecordMap) {
     }
-    @SuppressWarnings('ApexUnusedDeclaration') public virtual void onAfterDelete(List<SObject> oldRecords, Map<Id, SObject> oldRecordMap) {
+    @SuppressWarnings('ApexUnusedDeclaration') global virtual void onAfterDelete(List<SObject> oldRecords, Map<Id, SObject> oldRecordMap) {
     }
-    @SuppressWarnings('ApexUnusedDeclaration') public virtual void onAfterUndelete(List<SObject> newRecords, Map<Id, SObject> newRecordMap) {
+    @SuppressWarnings('ApexUnusedDeclaration') global virtual void onAfterUndelete(List<SObject> newRecords, Map<Id, SObject> newRecordMap) {
     }
 
     private Integer maxBeforeInsertExecutions = 2;
     private Integer maxBeforeUpdateExecutions = 2;
     private Integer maxAfterInsertExecutions = 2;
     private Integer maxAfterUpdateExecutions = 2;
-    public TriggerHandler(Integer maxBeforeInsertExecutions, Integer maxBeforeUpdateExecutions, Integer maxAfterInsertExecutions, Integer maxAfterUpdateExecutions) {
+    global TriggerHandler(Integer maxBeforeInsertExecutions, Integer maxBeforeUpdateExecutions, Integer maxAfterInsertExecutions, Integer maxAfterUpdateExecutions) {
         TriggerState triggerState = TriggerHandler.triggerStatesByImplementation.get(getHandlerName());
-        if(triggerState == null) {
+        if (triggerState == null) {
             triggerState = new TriggerState();
             TriggerHandler.triggerStatesByImplementation.put(getHandlerName(), triggerState);
             System.debug(LOGGING_LEVEL, 'Trigger Handler initialized for ' + getHandlerName() + ' with state instance: ' + getTriggerState().instance_id);
@@ -63,10 +63,10 @@ public abstract class TriggerHandler {
         this.maxAfterInsertExecutions = maxAfterInsertExecutions;
         this.maxAfterUpdateExecutions = maxAfterUpdateExecutions;
     }
-    public TriggerHandler() {
+    global TriggerHandler() {
         this(2, 2, 2, 2);
     }
-    public void execute() {
+    global void execute() {
         if (Trigger.isBefore) {
             System.debug(LOGGING_LEVEL, 'Trigger starting BEFORE context for ' + getHandlerName() + ' with state: ' + JSON.serialize(getTriggerState()));
             if (Trigger.isInsert && getBeforeInsertExecutions() < this.maxBeforeInsertExecutions) {
@@ -129,20 +129,20 @@ public abstract class TriggerHandler {
         state.afterUpdateExecutions++;
         TriggerHandler.triggerStatesByImplementation.put(getHandlerName(), state);
     }
-    public Integer getBeforeInsertExecutions() {
+    global Integer getBeforeInsertExecutions() {
         return getTriggerState().beforeInsertExecutions;
     }
-    public Integer getBeforeUpdateExecutions() {
+    global Integer getBeforeUpdateExecutions() {
         return getTriggerState().beforeUpdateExecutions;
     }
-    public Integer getAfterInsertExecutions() {
+    global Integer getAfterInsertExecutions() {
         return getTriggerState().afterInsertExecutions;
     }
-    public Integer getAfterUpdateExecutions() {
+    global Integer getAfterUpdateExecutions() {
         return getTriggerState().afterUpdateExecutions;
     }
 
-    public Boolean isChanged(SObject record, SObjectField fieldKey) {
+    global Boolean isChanged(SObject record, SObjectField fieldKey) {
         String recordId = record.Id;
         SObject oldEntry = recordId != null ? Trigger.oldMap?.get(recordId) : null;
         SObject newEntry = recordId != null ? Trigger.newMap?.get(recordId) : record;

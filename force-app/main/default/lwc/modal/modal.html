@@ -1,0 +1,35 @@
+<template>
+    <section class="slds-modal slds-fade-in-open">
+        <div class="modal_container slds-modal__container">
+            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse modal-standard-close"
+                    title="Close" onclick={handleClose}>
+                <lightning-icon
+                        icon-name="utility:close"
+                        alternative-text="close"
+                        size="small">
+                </lightning-icon>
+            </button>
+            <div class="modal_header" if:true={title}>
+                <div class="modal_header-item">
+                    <h2 class="slds-text-heading_medium slds-hyphenate">
+                        <slot name="header">
+                            <lightning-icon
+                                    if:true={icon}
+                                    icon-name={icon}
+                                    size="medium">
+                            </lightning-icon>
+                            &nbsp;{title}
+                        </slot>
+                    </h2>
+                </div>
+            </div>
+            <div class="modal_body slds-modal__content slds-container_center">
+                <slot></slot>
+            </div>
+            <footer if:false={hideFooter} class="slds-modal__footer action_container">
+                <slot name="actions">
+                </slot>
+            </footer>
+        </div>
+    </section>
+</template>

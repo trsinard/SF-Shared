@@ -2,15 +2,15 @@
  * @author Timothy Sinard
  *
  */
-public class BetterInteger {
+global class BetterInteger {
 
-    public static final Integer MAX = 2147483647;
-    public static final Integer MIN = -2147483647;
-    public static Integer valueOf(Object obj) {
+    global static final Integer MAX = 2147483647;
+    global static final Integer MIN = -2147483647;
+    global static Integer valueOf(Object obj) {
         return valueOf(obj, false);
     }
 
-    public static Integer parse(Object obj, Boolean zeroNull) {
+    global static Integer parse(Object obj, Boolean zeroNull) {
         String str = BetterString.valueOf(obj);
         Integer result = null;
         if (str != null) {
@@ -27,7 +27,7 @@ public class BetterInteger {
         return result == null && zeroNull ? 0 : result;
     }
 
-    public static Integer valueOf(Object obj, Boolean zeroNull) {
+    global static Integer valueOf(Object obj, Boolean zeroNull) {
         Integer result = zeroNull ? 0 : null;
         if (obj != null) {
             String str = String.valueOf(obj);
@@ -60,7 +60,7 @@ public class BetterInteger {
         'hundred' => 100, 'thousand' => 1000, 'million' => 1000000, 'billion' => 1000000000
     };
 
-    public static Integer textToNumber(String words) {
+    global static Integer textToNumber(String words) {
         words = words == null ? null : words.trim().toLowerCase();
         if (words == null || words == '') {
             return null;

@@ -2,7 +2,7 @@
  * @author Timothy Sinard
  *
  */
-public virtual class RestfulConnection {
+global virtual class RestfulConnection {
 
     protected String namedCredential;
     private Boolean trackHistory = true;
@@ -31,27 +31,38 @@ public virtual class RestfulConnection {
         }
     }
 
+    private Integer timeout = 10000;
+
     private static final Map<String, RestfulConnection> cachedConnections = new Map<String, RestfulConnection>();
 
-    public RestfulConnection(String namedCredential) {
+    global RestfulConnection(String namedCredential) {
         this.enableHistoryTracking();
         this.namedCredential = namedCredential;
         RestfulConnection.cachedConnections.put(namedCredential, this);
     }
 
-    public void disableHistoryTracking() {
+    global void disableHistoryTracking() {
         this.trackHistory = false;
     }
 
-    public void enableHistoryTracking() {
+    global void setTimeout(Integer num) {
+        this.timeout = num;
+    }
+
+    global Integer getTimeout() {
+        return this.timeout;
+    }
+
+
+    global void enableHistoryTracking() {
         this.trackHistory = true;
     }
 
-    public List<CallHistory> getHistory() {
+    global List<CallHistory> getHistory() {
         return this.history;
     }
 
-    public static RestfulConnection getConnection(String namedCredential) {
+    global static RestfulConnection getConnection(String namedCredential) {
         RestfulConnection connection = RestfulConnection.cachedConnections.get(namedCredential);
         if (connection == null) {
             connection = new RestfulConnection(namedCredential);
@@ -61,7 +72,7 @@ public virtual class RestfulConnection {
     }
 
     @TestVisible
-    protected virtual String executeGetOnPath(String path) {
+    protected virtual String executeGet(String path) {
         return executeGet(path, null, null);
     }
 
@@ -72,25 +83,36 @@ public virtual class RestfulConnection {
     }
 
     @TestVisible
-    protected virtual String executePost(String path, Map<String, String> headers, Map<String, Object> body) {
-        return executePost(path, headers, JSON.serialize(body));
+    protected virtual HttpResponse executeDelete(String path, Map<String, String> headers, Map<String, Object> parameters) {
+        return executeCallout(path, 'DELETE', headers, parameters, null);
     }
 
-    @TestVisible
-    protected virtual String executePost(String path, Map<String, String> headers, String body) {
-        return executePostForResponse(path, headers, body).getBody();
-    }
 
     @TestVisible
-    protected HttpResponse executePostForResponse(String path, Map<String, String> headers, String body) {
+    protected HttpResponse executePost(String path, Map<String, String> headers, String body) {
         headers = headers == null ? new Map<String, String>() : headers;
-        headers.put('Content-Type', 'application/json');
-        headers.put('Accept', 'application/json');
         HttpResponse response = executeCallout(path, 'POST', headers, body);
         return response;
     }
 
-    public HttpResponse executeCallout(String path, String httpMethod, Map<String, Object> headers, Map<String, Object> parameters, String body) {
+
+    @TestVisible
+    protected HttpResponse executePut(String path, Map<String, String> headers, String body) {
+        headers = headers == null ? new Map<String, String>() : headers;
+        HttpResponse response = executeCallout(path, 'PUT', headers, body);
+        return response;
+    }
+
+
+
+    @TestVisible
+    protected HttpResponse executePatch(String path, Map<String, String> headers, Map<String, String> parameters, String body) {
+        headers = headers == null ? new Map<String, String>() : headers;
+        HttpResponse response = executeCallout(path, 'PATCH', headers, parameters, body);
+        return response;
+    }
+
+    global HttpResponse executeCallout(String path, String httpMethod, Map<String, Object> headers, Map<String, Object> parameters, String body) {
         path += this.convertMapToUrlParameters(parameters);
         headers = headers == null ? new Map<String, String>() : headers;
         return executeCallout(path, httpMethod, headers, body);
@@ -101,6 +123,9 @@ public virtual class RestfulConnection {
         HttpRequest req = new HttpRequest();
         req.setEndpoint('callout:' + this.namedCredential + path);
         req.setMethod(httpMethod);
+        if (this.timeout != null) {
+            req.setTimeout(this.timeout);
+        }
         if (body != null) {
             req.setBody(body);
         }
@@ -143,10 +168,9 @@ public virtual class RestfulConnection {
     }
 
     @TestVisible
-    protected Boolean isSuccess(String payload) {
-        Integer statusCode = JsonUtil.integerFromPath(payload, 'status');
+    protected Boolean isSuccess(HttpResponse response) {
+        Integer statusCode = response.getStatusCode();
         statusCode = statusCode == null ? 0 : statusCode;
         return statusCode / 100 == 2;
-
     }
 }

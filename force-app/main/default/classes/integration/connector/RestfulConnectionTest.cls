@@ -29,6 +29,29 @@ public class RestfulConnectionTest {
     }
 
     @IsTest
+    public static void executesExpectedDeleteRequest() {
+
+        String expectedResponse = '{"response":"success"}';
+        HttpMock mock = new HttpMock(200, 'Success', expectedResponse);
+        Test.setMock(HttpCalloutMock.class, mock);
+        Test.startTest();
+        RestfulConnection connection = new RestfulConnection('NAMED_CREDENTIAL');
+        String actualResponse = connection.executeDelete('/relative', new Map<String, String>{
+            'TEST' => 'value'
+        }, new Map<String, String>{
+            'param1' => 'foobar'
+        }).getBody();
+
+        Test.stopTest();
+
+        System.assertEquals(expectedResponse, actualResponse);
+        mock.assertMethod('DELETE');
+        mock.assertRequestHeader('TEST', 'value');
+        mock.assertEndpoint('callout:NAMED_CREDENTIAL/relative?param1=foobar');
+        mock.assertRequestBody('');
+    }
+
+    @IsTest
     public static void tracksHistoryForCalls() {
 
         TestableDatetime.setNow(Datetime.newInstance(2024, 09, 06, 03, 23, 20));
@@ -91,9 +114,9 @@ public class RestfulConnectionTest {
         RestfulConnection connection = new RestfulConnection('NAMED_CREDENTIAL');
         String actualResponse = connection.executePost('/relative', new Map<String, String>{
             'TEST' => 'value'
-        }, new Map<String, Object>{
+        }, JSON.serialize(new Map<String, Object>{
             'body' => 'fubar'
-        });
+        })).getBody();
 
         Test.stopTest();
 
@@ -101,6 +124,54 @@ public class RestfulConnectionTest {
         mock.assertMethod('POST');
         mock.assertRequestHeader('TEST', 'value');
         mock.assertEndpoint('callout:NAMED_CREDENTIAL/relative');
+        mock.assertRequestBody('{"body":"fubar"}');
+    }
+
+    @IsTest
+    public static void executesExpectedPutRequest() {
+
+        String expectedResponse = '{"response":"success"}';
+        HttpMock mock = new HttpMock(200, 'Success', expectedResponse);
+        Test.setMock(HttpCalloutMock.class, mock);
+        Test.startTest();
+        RestfulConnection connection = new RestfulConnection('NAMED_CREDENTIAL');
+        String actualResponse = connection.executePut('/relative', new Map<String, String>{
+            'TEST' => 'value'
+        }, JSON.serialize(new Map<String, Object>{
+            'body' => 'fubar'
+        })).getBody();
+
+        Test.stopTest();
+
+        System.assertEquals(expectedResponse, actualResponse);
+        mock.assertMethod('PUT');
+        mock.assertRequestHeader('TEST', 'value');
+        mock.assertEndpoint('callout:NAMED_CREDENTIAL/relative');
+        mock.assertRequestBody('{"body":"fubar"}');
+    }
+
+    @IsTest
+    public static void executesExpectedPatchRequest() {
+
+        String expectedResponse = '{"response":"success"}';
+        HttpMock mock = new HttpMock(200, 'Success', expectedResponse);
+        Test.setMock(HttpCalloutMock.class, mock);
+        Test.startTest();
+        RestfulConnection connection = new RestfulConnection('NAMED_CREDENTIAL');
+        String actualResponse = connection.executePatch('/relative', new Map<String, String>{
+            'TEST' => 'value'
+        }, new Map<String, String>{
+            'param1' => 'foobar'
+        }, JSON.serialize(new Map<String, Object>{
+            'body' => 'fubar'
+        })).getBody();
+
+        Test.stopTest();
+
+        System.assertEquals(expectedResponse, actualResponse);
+        mock.assertMethod('PATCH');
+        mock.assertRequestHeader('TEST', 'value');
+        mock.assertEndpoint('callout:NAMED_CREDENTIAL/relative?param1=foobar');
         mock.assertRequestBody('{"body":"fubar"}');
     }
 
@@ -115,7 +186,7 @@ public class RestfulConnectionTest {
 
         Boolean error = false;
         try {
-            connection.executeGetOnPath('/relative');
+            connection.executeGet('/relative');
         } catch (AuthorizationException e) {
             error = true;
         }
@@ -125,6 +196,13 @@ public class RestfulConnectionTest {
         mock.assertMethod('GET');
         mock.assertEndpoint('callout:NAMED_CREDENTIAL/relative');
         mock.assertRequestBody('');
+    }
+
+    @IsTest
+    public static void setsTimeout() {
+        RestfulConnection connection = new RestfulConnection('NAMED_CREDENTIAL');
+        connection.setTimeout(100);
+        System.assertEquals(100, connection.getTimeout());
     }
 
     @IsTest
@@ -148,25 +226,29 @@ public class RestfulConnectionTest {
 
     }
 
+
     @IsTest
-    public static void returnsSuccessFromStatusResponseBody() {
-
+    public static void returnsSuccessFromResponse() {
+        String expectedResponse = '{"response":"success"}';
+        HttpMock mock = new HttpMock(200, 'Success', expectedResponse);
+        Test.setMock(HttpCalloutMock.class, mock);
+        Test.startTest();
         RestfulConnection connection = new RestfulConnection('NAMED_CREDENTIAL');
-        System.assertEquals(true, connection.isSuccess('{"status":200}'));
-        System.assertEquals(true, connection.isSuccess('{"status":201}'));
-        System.assertEquals(true, connection.isSuccess('{"status":203}'));
-        System.assertEquals(true, connection.isSuccess('{"status":250}'));
-        System.assertEquals(true, connection.isSuccess('{"status":299}'));
-
+        HttpResponse response = connection.executePost('/relative', new Map<String, String>(), null);
+        Test.stopTest();
+        System.assertEquals(true, connection.isSuccess(response));
     }
 
     @IsTest
-    public static void returnsNotSuccessFromStatusResponseBody() {
+    public static void returnsNotSuccessFromResponse() {
+        String expectedResponse = '{}';
+        HttpMock mock = new HttpMock(400, 'Success', expectedResponse);
+        Test.setMock(HttpCalloutMock.class, mock);
+        Test.startTest();
         RestfulConnection connection = new RestfulConnection('NAMED_CREDENTIAL');
-        System.assertEquals(false, connection.isSuccess('{"status":500}'));
-        System.assertEquals(false, connection.isSuccess('{"status":404}'));
-        System.assertEquals(false, connection.isSuccess('{"status":4002}'));
-        System.assertEquals(false, connection.isSuccess('{}'));
+        HttpResponse response = connection.executePost('/relative', new Map<String, String>(), null);
+        Test.stopTest();
+        System.assertEquals(false, connection.isSuccess(response));
     }
 
     @IsTest

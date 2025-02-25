@@ -1,6 +1,5 @@
 import {api, LightningElement, track, wire} from 'lwc';
 import { getPicklistValues, getObjectInfo } from 'lightning/uiObjectInfoApi';
-import {empty} from "c/commonUtils";
 
 
 export default class InputDualList extends LightningElement {

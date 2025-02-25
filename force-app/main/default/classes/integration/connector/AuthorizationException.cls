@@ -3,6 +3,6 @@
  *
  */
 
-public class AuthorizationException extends Exception {
+global class AuthorizationException extends Exception {
 
 }

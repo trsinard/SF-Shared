@@ -37,7 +37,7 @@ public class JsonNode {
             Object obj = (untyped instanceof Map<String, Object>) ? ((Map<String, Object>) untyped).get(property) : untyped;
             this.value = obj;
             if(this.forArray) {
-                this.value = BetterArray.at((List<Object>)obj,index);
+                this.value = BetterCollection.at((List<Object>)obj,index);
                 obj = this.value;
             }
             if (!String.isBlank(nextPath)) {

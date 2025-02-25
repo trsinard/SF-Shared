@@ -1,4 +1,4 @@
-public with sharing class FilterBuilder {
+global with sharing class FilterBuilder {
 
     public final static Operator OP_AND = new Operator('AND');
     public final static Operator OP_OR = new Operator('OR');
@@ -24,15 +24,15 @@ public with sharing class FilterBuilder {
         this.operator = op;
     }
 
-    public static FilterBuilder newAnd() {
+    global static FilterBuilder newAnd() {
         return new FilterBuilder(OP_AND);
     }
 
-    public static FilterBuilder newOr() {
+    global static FilterBuilder newOr() {
         return new FilterBuilder(OP_OR);
     }
 
-    public FilterBuilder add(String filter) {
+    global FilterBuilder add(String filter) {
         filter = filter?.trim();
         if(!String.isEmpty(filter)) {
             filters.add(filter);

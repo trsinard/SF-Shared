@@ -38,7 +38,6 @@ public class JsonUtil {
         return BetterInteger.valueOf(valueFromPath(payload, path));
     }
 
-
     public static Object fromPathMatchingAttribute(String payload, String path, String key, Object value) {
 
         String parentPropertyPath = path.substringBeforeLast('.');

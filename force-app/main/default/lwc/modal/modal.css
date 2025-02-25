@@ -1,0 +1,61 @@
+:host {
+    --offset-footer: 50px;
+    --offset-header: 50px;
+
+}
+.slds-fade-in-open {
+    background-color: #0000007d;
+}
+.modal_container {
+    --slds-g-color-neutral-base-50: white;
+    --slds-g-color-brand-base-90: white;
+    max-width: 90vw;
+    width: fit-content;
+    margin: auto;
+    min-width: min(100%,max(500px,50vw));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.action_container {
+    display: flex;
+    align-content: space-between;
+    justify-content: center;
+    gap: 20px;
+}
+
+.modal_header * {
+    margin: auto;
+}
+.modal_header {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    justify-content: space-between;
+    align-content: center;
+    padding: 10px 10px;
+    background-color: white;
+    border-bottom: 1px solid darkgray;
+    position: relative;
+    text-align: center;
+}
+.modal_header-item {
+    flex: 1 1 auto;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+}
+
+.modal_body {
+    width: 100%;
+    padding-bottom: 0;
+}
+
+.modal-standard-close {
+    display: initial;
+
+}
+.modal-mobile-close {
+    display: none;
+}
